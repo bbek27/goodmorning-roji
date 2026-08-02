@@ -58,6 +58,7 @@
       width: 100%;
       margin-bottom: 25px;
       animation: fadeIn 1.5s ease-in-out;
+      z-index: 10;
     }
 
     h1 {
@@ -76,12 +77,19 @@
       color: #ffe4e1;
     }
 
-    .tap-notice {
+    .start-btn {
+      background: #ffb6c1;
+      color: #000;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.5);
       margin-top: 15px;
-      font-size: 0.85rem;
-      color: #ffb6c1;
-      opacity: 0.8;
       animation: pulse 1.5s infinite;
+      z-index: 10;
     }
 
     @keyframes fadeIn {
@@ -90,13 +98,13 @@
     }
 
     @keyframes pulse {
-      0% { opacity: 0.4; }
-      50% { opacity: 1; }
-      100% { opacity: 0.4; }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
-<body onclick="startAudioAndConfetti()">
+<body>
 
   <!-- Glowing Lightning Bolt Header -->
   <div class="lightning-icon">⚡</div>
@@ -107,45 +115,63 @@
       Have a good day ahead. <br>
       <span>Be strong, take care, pretty girl!</span> ✨
     </p>
-    <div class="tap-notice">✨ Tap anywhere on screen for music & flowers ✨</div>
+
+    <!-- Tap Button -->
+    <button class="start-btn" id="startBtn" onclick="playMusicAndEmojiShower()">🥰 Tap for Music & Hearts 💖</button>
   </div>
 
-  <!-- Audio configured to loop continuously -->
+  <!-- Audio File -->
   <audio id="myAudio" src="22b070edf7e4937e5d7ba203fb494249.mp3" loop preload="auto"></audio>
 
   <script>
-    let hasStarted = false;
+    function playMusicAndEmojiShower() {
+      var audio = document.getElementById("myAudio");
+      var btn = document.getElementById("startBtn");
 
-    // Trigger flowers on initial load
-    window.addEventListener('load', () => {
-      triggerConfetti();
-    });
+      // Play audio & loop continuously
+      audio.play().then(() => {
+        btn.innerText = "🎶 Playing Music... ✨";
+        btn.style.background = "#ffe4e1";
+      }).catch((e) => {
+        console.log("Audio play error:", e);
+      });
 
-    function triggerConfetti() {
+      // Prepare Custom Emoji Confetti
+      const emojiHearts = confetti.shapeFromText({ text: '🥰', scalar: 3 });
+      const emojiPinkHeart = confetti.shapeFromText({ text: '💖', scalar: 3 });
+
+      // Burst an initial huge wave
       confetti({
+        shapes: [emojiHearts, emojiPinkHeart],
+        scalar: 3,
         particleCount: 100,
-        spread: 80,
+        spread: 100,
         origin: { y: 0.6 }
       });
-    }
 
-    function startAudioAndConfetti() {
-      var audio = document.getElementById("myAudio");
-
-      // Auto-play song on first tap/click and loop forever
-      if (audio.paused) {
-        audio.play().catch(function(error) {
-          console.log("Autoplay waiting for touch:", error);
+      // Endless continuous stream of floating 🥰 & 💖
+      setInterval(() => {
+        confetti({
+          shapes: [emojiHearts, emojiPinkHeart],
+          scalar: 3,
+          particleCount: 12,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
         });
-      }
-
-      // Pop flowers on screen tap
-      if (!hasStarted) {
-        triggerConfetti();
-        hasStarted = true;
-      }
+        confetti({
+          shapes: [emojiHearts, emojiPinkHeart],
+          scalar: 3,
+          particleCount: 12,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+      }, 400);
     }
   </script>
 
 </body>
 </html>
+
+  
