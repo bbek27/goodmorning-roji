@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Good Morning Roji!</title>
+  <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     * {
@@ -18,7 +19,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: #0d0d0d; /* Pitch Black Background */
       font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
       color: #fff;
@@ -26,16 +27,37 @@
       padding: 20px;
     }
 
+    /* Animated Glowing Lightning Icon */
+    .lightning-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      animation: lightningGlow 1.2s infinite alternate ease-in-out;
+    }
+
+    @keyframes lightningGlow {
+      0% {
+        transform: scale(1);
+        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 20px #ffae00;
+        filter: drop-shadow(0 0 2px #fff);
+      }
+      100% {
+        transform: scale(1.15);
+        text-shadow: 0 0 15px #ffd700, 0 0 30px #ffae00, 0 0 45px #ff8c00;
+        filter: drop-shadow(0 0 10px #ffd700);
+      }
+    }
+
     .container {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
       border-radius: 20px;
       padding: 40px 30px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       max-width: 400px;
       width: 100%;
       margin-bottom: 25px;
+      animation: fadeIn 1.5s ease-in-out;
     }
 
     h1 {
@@ -54,26 +76,33 @@
       color: #ffe4e1;
     }
 
-    /* Big Music Button */
     .play-btn {
       background: #ffb6c1;
-      color: #2c5364;
+      color: #0d0d0d;
       border: none;
       padding: 14px 28px;
       font-size: 1.1rem;
       font-weight: bold;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(255, 182, 193, 0.4);
+      box-shadow: 0 4px 20px rgba(255, 182, 193, 0.3);
       transition: all 0.3s ease;
     }
 
     .play-btn:active {
       transform: scale(0.95);
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Glowing Lightning Bolt Header -->
+  <div class="lightning-icon">⚡</div>
 
   <div class="container">
     <h1>Good Morning Roji! 🌸</h1>
@@ -83,17 +112,31 @@
     </p>
   </div>
 
-  <!-- Music Player Button -->
   <button class="play-btn" id="musicBtn" onclick="playAudio()">▶️ Play Music 🎵</button>
 
-  <!-- Audio source set to your uploaded file -->
   <audio id="myAudio" src="22b070edf7e4937e5d7ba203fb494249.mp3" preload="auto"></audio>
 
   <script>
+    // Trigger celebratory flowers/confetti on page load
+    window.addEventListener('load', () => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    });
+
     function playAudio() {
       var audio = document.getElementById("myAudio");
       var btn = document.getElementById("musicBtn");
       
+      // Pop extra flowers on tap
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.7 }
+      });
+
       if (audio.paused) {
         audio.play();
         btn.innerHTML = "⏸️ Pause Music";
@@ -108,7 +151,3 @@
 
 </body>
 </html>
-
-
-
-
