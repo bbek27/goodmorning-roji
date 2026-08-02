@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Good Morning Roji!</title>
-  <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     * {
@@ -16,6 +15,7 @@
     body {
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
@@ -35,7 +35,7 @@
       border: 1px solid rgba(255, 255, 255, 0.18);
       max-width: 400px;
       width: 100%;
-      animation: fadeIn 1.5s ease-in-out;
+      margin-bottom: 25px;
     }
 
     h1 {
@@ -47,7 +47,6 @@
     p {
       font-size: 1.1rem;
       line-height: 1.6;
-      margin-bottom: 20px;
     }
 
     span {
@@ -55,15 +54,22 @@
       color: #ffe4e1;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* Big Music Button */
+    .play-btn {
+      background: #ffb6c1;
+      color: #2c5364;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 182, 193, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .play-btn:active {
+      transform: scale(0.95);
     }
   </style>
 </head>
@@ -77,29 +83,32 @@
     </p>
   </div>
 
-  <!-- Background Audio File -->
-  <audio id="bg-music" src="22b070edf7e4937e5d7ba203fb494249.mp3" loop></audio>
+  <!-- Music Player Button -->
+  <button class="play-btn" id="musicBtn" onclick="playAudio()">▶️ Play Music 🎵</button>
 
-  <!-- Play/Pause Music Button -->
-  <button onclick="toggleMusic()" id="music-btn" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 15px; border-radius: 20px; border: none; background: #ffb6c1; color: #2c5364; font-weight: bold; cursor: pointer; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">🎵 Play Song</button>
+  <!-- Audio source set to your uploaded file -->
+  <audio id="myAudio" src="22b070edf7e4937e5d7ba203fb494249.mp3" preload="auto"></audio>
 
   <script>
-    const music = document.getElementById('bg-music');
-    const btn = document.getElementById('music-btn');
-
-    function toggleMusic() {
-      if (music.paused) {
-        music.play();
-        btn.innerText = "⏸️ Pause Song";
+    function playAudio() {
+      var audio = document.getElementById("myAudio");
+      var btn = document.getElementById("musicBtn");
+      
+      if (audio.paused) {
+        audio.play();
+        btn.innerHTML = "⏸️ Pause Music";
+        btn.style.background = "#ffe4e1";
       } else {
-        music.pause();
-        btn.innerText = "🎵 Play Song";
+        audio.pause();
+        btn.innerHTML = "▶️ Play Music 🎵";
+        btn.style.background = "#ffb6c1";
       }
     }
   </script>
 
 </body>
 </html>
+
 
 
 
