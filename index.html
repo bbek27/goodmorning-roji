@@ -19,7 +19,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: #0d0d0d; /* Pitch Black Background */
+      background: #000000; /* Pure Black Background */
       font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
       color: #fff;
@@ -29,31 +29,31 @@
 
     /* Animated Glowing Lightning Icon */
     .lightning-icon {
-      font-size: 3rem;
-      margin-bottom: 10px;
-      animation: lightningGlow 1.2s infinite alternate ease-in-out;
+      font-size: 3.5rem;
+      margin-bottom: 15px;
+      animation: lightningGlow 1s infinite alternate ease-in-out;
     }
 
     @keyframes lightningGlow {
       0% {
         transform: scale(1);
-        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 20px #ffae00;
-        filter: drop-shadow(0 0 2px #fff);
+        text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffae00;
+        filter: drop-shadow(0 0 5px #fff);
       }
       100% {
-        transform: scale(1.15);
-        text-shadow: 0 0 15px #ffd700, 0 0 30px #ffae00, 0 0 45px #ff8c00;
-        filter: drop-shadow(0 0 10px #ffd700);
+        transform: scale(1.2);
+        text-shadow: 0 0 20px #ffd700, 0 0 40px #ffae00, 0 0 60px #ff8c00;
+        filter: drop-shadow(0 0 15px #ffd700);
       }
     }
 
     .container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
       border-radius: 20px;
       padding: 40px 30px;
-      box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       max-width: 400px;
       width: 100%;
       margin-bottom: 25px;
@@ -76,30 +76,27 @@
       color: #ffe4e1;
     }
 
-    .play-btn {
-      background: #ffb6c1;
-      color: #0d0d0d;
-      border: none;
-      padding: 14px 28px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(255, 182, 193, 0.3);
-      transition: all 0.3s ease;
-    }
-
-    .play-btn:active {
-      transform: scale(0.95);
+    .tap-notice {
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: #ffb6c1;
+      opacity: 0.8;
+      animation: pulse 1.5s infinite;
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
   </style>
 </head>
-<body>
+<body onclick="startAudioAndConfetti()">
 
   <!-- Glowing Lightning Bolt Header -->
   <div class="lightning-icon">⚡</div>
@@ -110,41 +107,42 @@
       Have a good day ahead. <br>
       <span>Be strong, take care, pretty girl!</span> ✨
     </p>
+    <div class="tap-notice">✨ Tap anywhere on screen for music & flowers ✨</div>
   </div>
 
-  <button class="play-btn" id="musicBtn" onclick="playAudio()">▶️ Play Music 🎵</button>
-
-  <audio id="myAudio" src="22b070edf7e4937e5d7ba203fb494249.mp3" preload="auto"></audio>
+  <!-- Audio configured to loop continuously -->
+  <audio id="myAudio" src="22b070edf7e4937e5d7ba203fb494249.mp3" loop preload="auto"></audio>
 
   <script>
-    // Trigger celebratory flowers/confetti on page load
+    let hasStarted = false;
+
+    // Trigger flowers on initial load
     window.addEventListener('load', () => {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      triggerConfetti();
     });
 
-    function playAudio() {
-      var audio = document.getElementById("myAudio");
-      var btn = document.getElementById("musicBtn");
-      
-      // Pop extra flowers on tap
+    function triggerConfetti() {
       confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.7 }
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.6 }
       });
+    }
 
+    function startAudioAndConfetti() {
+      var audio = document.getElementById("myAudio");
+
+      // Auto-play song on first tap/click and loop forever
       if (audio.paused) {
-        audio.play();
-        btn.innerHTML = "⏸️ Pause Music";
-        btn.style.background = "#ffe4e1";
-      } else {
-        audio.pause();
-        btn.innerHTML = "▶️ Play Music 🎵";
-        btn.style.background = "#ffb6c1";
+        audio.play().catch(function(error) {
+          console.log("Autoplay waiting for touch:", error);
+        });
+      }
+
+      // Pop flowers on screen tap
+      if (!hasStarted) {
+        triggerConfetti();
+        hasStarted = true;
       }
     }
   </script>
