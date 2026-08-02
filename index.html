@@ -1,177 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Good Morning Roji!</title>
-  <!-- Canvas Confetti Library -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Good Morning Roji</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: #000000; /* Pure Black Background */
-      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
-      color: #fff;
+      background-color: #0d0d0d;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      margin: 0;
+      padding-top: 50px;
+      overflow: hidden; /* Prevents scrollbars as emojis bounce */
+      height: 100vh;
     }
 
-    /* Animated Glowing Lightning Icon */
-    .lightning-icon {
-      font-size: 3.5rem;
-      margin-bottom: 15px;
-      animation: lightningGlow 1s infinite alternate ease-in-out;
-    }
-
-    @keyframes lightningGlow {
-      0% {
-        transform: scale(1);
-        text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700, 0 0 30px #ffae00;
-        filter: drop-shadow(0 0 5px #fff);
-      }
-      100% {
-        transform: scale(1.2);
-        text-shadow: 0 0 20px #ffd700, 0 0 40px #ffae00, 0 0 60px #ff8c00;
-        filter: drop-shadow(0 0 15px #ffd700);
-      }
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 40px 30px;
-      box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      max-width: 400px;
-      width: 100%;
-      margin-bottom: 25px;
-      animation: fadeIn 1.5s ease-in-out;
-      z-index: 10;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 15px;
-      color: #ffb6c1;
-    }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-
-    span {
-      font-weight: bold;
-      color: #ffe4e1;
-    }
-
-    .start-btn {
-      background: #ffb6c1;
-      color: #000;
-      border: none;
-      padding: 15px 30px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 0 15px rgba(255, 182, 193, 0.5);
-      margin-top: 15px;
-      animation: pulse 1.5s infinite;
-      z-index: 10;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+    /* Style for floating bouncing elements */
+    .bouncing-emoji {
+      position: absolute;
+      font-size: 3rem;
+      user-select: none;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Glowing Lightning Bolt Header -->
-  <div class="lightning-icon">⚡</div>
+  <h1>Good Morning, Roji!</h1>
 
-  <div class="container">
-    <h1>Good Morning Roji! 🌸</h1>
-    <p>
-      Have a good day ahead. <br>
-      <span>Be strong, take care, pretty girl!</span> ✨
-    </p>
-
-    <!-- Tap Button -->
-    <button class="start-btn" id="startBtn" onclick="playMusicAndEmojiShower()">🥰 Tap for Music & Hearts 💖</button>
-  </div>
-
-  <!-- Audio File -->
-  <audio id="myAudio" src="22b070edf7e4937e5d7ba203fb494249.mp3" loop preload="auto"></audio>
+  <!-- Floating Emojis -->
+  <div class="bouncing-emoji" id="emoji1">🥰</div>
+  <div class="bouncing-emoji" id="emoji2">💖</div>
 
   <script>
-    function playMusicAndEmojiShower() {
-      var audio = document.getElementById("myAudio");
-      var btn = document.getElementById("startBtn");
+    function makeBounce(elementId, speedX, speedY) {
+      const el = document.getElementById(elementId);
+      
+      // Starting positions
+      let posX = Math.random() * (window.innerWidth - 60);
+      let posY = Math.random() * (window.innerHeight - 60);
+      
+      let dx = speedX;
+      let dy = speedY;
 
-      // Play audio & loop continuously
-      audio.play().then(() => {
-        btn.innerText = "🎶 Playing Music... ✨";
-        btn.style.background = "#ffe4e1";
-      }).catch((e) => {
-        console.log("Audio play error:", e);
-      });
+      function update() {
+        const width = window.innerWidth - 60;
+        const height = window.innerHeight - 60;
 
-      // Prepare Custom Emoji Confetti
-      const emojiHearts = confetti.shapeFromText({ text: '🥰', scalar: 3 });
-      const emojiPinkHeart = confetti.shapeFromText({ text: '💖', scalar: 3 });
+        posX += dx;
+        posY += dy;
 
-      // Burst an initial huge wave
-      confetti({
-        shapes: [emojiHearts, emojiPinkHeart],
-        scalar: 3,
-        particleCount: 100,
-        spread: 100,
-        origin: { y: 0.6 }
-      });
+        // Bounce off left/right edges
+        if (posX <= 0 || posX >= width) {
+          dx = -dx;
+        }
 
-      // Endless continuous stream of floating 🥰 & 💖
-      setInterval(() => {
-        confetti({
-          shapes: [emojiHearts, emojiPinkHeart],
-          scalar: 3,
-          particleCount: 12,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 }
-        });
-        confetti({
-          shapes: [emojiHearts, emojiPinkHeart],
-          scalar: 3,
-          particleCount: 12,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 }
-        });
-      }, 400);
+        // Bounce off top/bottom edges
+        if (posY <= 0 || posY >= height) {
+          dy = -dy;
+        }
+
+        el.style.left = posX + 'px';
+        el.style.top = posY + 'px';
+
+        // Keeps bouncing endlessly frame by frame
+        requestAnimationFrame(update);
+      }
+
+      update();
     }
+
+    // Start bouncing both emojis (adjust numbers for different speeds)
+    makeBounce('emoji1', 3, 2);
+    makeBounce('emoji2', -2.5, 3.5);
   </script>
 
 </body>
 </html>
-
-  
+                
