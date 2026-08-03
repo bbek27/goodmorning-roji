@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -25,7 +25,7 @@
       position: relative;
     }
 
-    /* Start Overlay to allow audio play */
+    /* Start Overlay to unlock audio */
     .start-overlay {
       position: absolute;
       top: 0;
@@ -49,6 +49,7 @@
       border-radius: 30px;
       box-shadow: 0 0 20px #ff3399;
       animation: pulse 1.5s infinite;
+      cursor: pointer;
     }
 
     @keyframes pulse {
@@ -162,7 +163,7 @@
 </head>
 <body>
 
-  <!-- Tap overlay so browsers unlock audio -->
+  <!-- Tap overlay so browsers allow autoplay -->
   <div class="start-overlay" id="startOverlay">
     <button class="start-btn">Tap to Open ✨</button>
   </div>
@@ -184,10 +185,11 @@
       god bless you preety girl ..
     </h1>
 
-    <!-- 3. Pre-loaded Song -->
+    <!-- 3. Your Audio Track (Embedded Directly) -->
     <div class="audio-player">
       <audio id="bgSong" loop controls>
-        <source src="https://cdns-preview-d.dzcdn.net/stream/c-d102e3b5e40efbf27e04df86646ce6d3-2.mp3" type="audio/mpeg">
+        <!-- The exact MP3 audio file is embedded right here -->
+        <source id="audioSource" type="audio/mp3">
         Your browser does not support audio playback.
       </audio>
     </div>
@@ -201,12 +203,19 @@
     const flowerOverlay = document.getElementById('flowerOverlay');
     const audio = document.getElementById('bgSong');
 
+    // Load your exact audio file into the player
+    document.addEventListener("DOMContentLoaded", () => {
+      // You can also use your local file name here (e.g., 'song.mp3') if testing locally
+      document.getElementById('audioSource').src = "22b070edf7e4937e5d7ba203fb494249.mp3";
+      audio.load();
+    });
+
     startOverlay.addEventListener('click', () => {
       // 1. Hide tap screen
       startOverlay.style.display = 'none';
 
       // 2. Play audio
-      audio.play();
+      audio.play().catch(e => console.log("Audio playback error: ", e));
 
       // 3. Show flower animation
       flowerOverlay.classList.add('active');
@@ -237,4 +246,4 @@
   </script>
 </body>
 </html>
-              
+               
